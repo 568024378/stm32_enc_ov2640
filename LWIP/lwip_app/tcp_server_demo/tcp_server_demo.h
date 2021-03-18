@@ -18,8 +18,10 @@
 //无
 ////////////////////////////////////////////////////////////////////////////////// 	   
 
- 
+#define FRAMEBUFFER_SIZE       (13*1024)
+
 #define TCP_SERVER_RX_BUFSIZE	10		//定义tcp server最大接收数据长度
+
 #define TCP_SERVER_PORT			8088	//定义tcp server的端口
 
 #define LWIP_SEND_HEADER		0x01	//表示准备发送头信息

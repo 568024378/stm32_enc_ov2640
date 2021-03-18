@@ -45,7 +45,7 @@
 
 
 #define LWIP_NETCONN                    1 							//LWIP_NETCONN==1:使能NETCON函数(要求使用api_lib.c)
-#define LWIP_SOCKET                     1							//LWIP_SOCKET==1:使能Sicket API(要求使用sockets.c)
+#define LWIP_SOCKET                     0							//LWIP_SOCKET==1:使能Sicket API(要求使用sockets.c)
 #define LWIP_COMPAT_MUTEX               1		
 #define LWIP_SO_RCVTIMEO                1 							//通过定义LWIP_SO_RCVTIMEO使能netconn结构体中recv_timeout,使用recv_timeout可以避免阻塞线程
 

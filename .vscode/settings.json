@@ -7,6 +7,7 @@
         "timer.h": "c",
         "tcp_server_demo.h": "c",
         "api.h": "c",
-        "opt.h": "c"
+        "opt.h": "c",
+        "netif.h": "c"
     }
 }
