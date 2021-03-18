@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "delay.h": "c"
+        "delay.h": "c",
+        "includes.h": "c",
+        "ucostask.h": "c",
+        "os_cpu.h": "c",
+        "timer.h": "c",
+        "tcp_server_demo.h": "c",
+        "api.h": "c",
+        "opt.h": "c"
     }
 }
