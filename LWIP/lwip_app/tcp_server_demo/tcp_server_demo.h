@@ -21,7 +21,9 @@
  
 #define TCP_SERVER_RX_BUFSIZE	1000		//定义tcp server最大接收数据长度
 #define TCP_SERVER_PORT			8088	//定义tcp server的端口
-#define LWIP_SEND_DATA			0X80	//定义有数据发送
+
+#define LWIP_SEND_HEADER		0x01	//表示准备发送头信息
+#define LWIP_SEND_BODY          0x02    //表示准备发送数据
 
 extern u8 tcp_server_recvbuf[TCP_SERVER_RX_BUFSIZE];	//TCP客户端接收数据缓冲区
 extern u8 tcp_server_flag;			//TCP服务器数据发送标志位

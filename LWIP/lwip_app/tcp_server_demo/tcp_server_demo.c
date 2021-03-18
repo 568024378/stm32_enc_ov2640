@@ -22,7 +22,8 @@
 ////////////////////////////////////////////////////////////////////////////////// 	   
  
 u8 tcp_server_recvbuf[TCP_SERVER_RX_BUFSIZE];	//TCP客户端接收数据缓冲区
-u8 *tcp_server_sendbuf="ENC28J60 NETCONN TCP Server send data\r\n";	
+u8 *tcp_server_header="ENC28J60 NETCONN TCP Server send header\r\n";	
+u8 *tcp_server_body="ENC28J60 NETCONN TCP Server send Body\r\n";	
 u8 tcp_server_flag;								//TCP服务器数据发送标志位
 
 //TCP客户端任务
@@ -69,16 +70,22 @@ static void tcp_server_thread(void *arg)
 			
 			while(1)
 			{
-				if((tcp_server_flag & LWIP_SEND_DATA) == LWIP_SEND_DATA) //有数据要发送
-				{
-					err = netconn_write(newconn ,tcp_server_sendbuf,strlen((char*)tcp_server_sendbuf),NETCONN_COPY); //发送tcp_server_sendbuf中的数据
+				if(tcp_server_flag & LWIP_SEND_HEADER) {//发送头
+					err = netconn_write(newconn ,tcp_server_header,strlen((char*)tcp_server_header),NETCONN_COPY); //发送tcp_server_sendbuf中的数据
 					if(err != ERR_OK)
 					{
 						printf("发送失败\r\n");
 					}
-					tcp_server_flag &= ~LWIP_SEND_DATA;
+					tcp_server_flag = 0;
+				} else if(tcp_server_flag & LWIP_SEND_BODY) { //发送数据
+					err = netconn_write(newconn ,tcp_server_body,strlen((char*)tcp_server_body),NETCONN_COPY); //发送tcp_server_sendbuf中的数据
+					if(err != ERR_OK)
+					{
+						printf("发送失败\r\n");
+					}
+					tcp_server_flag = 0;
 				}
-				
+
 				if((recv_err = netconn_recv(newconn,&recvbuf)) == ERR_OK)  	//接收到数据
 				{		
 					OS_ENTER_CRITICAL(); //关中断
@@ -95,6 +102,13 @@ static void tcp_server_thread(void *arg)
 					OS_EXIT_CRITICAL();  //开中断
 					data_len=0;  //复制完成后data_len要清零。	
 					printf("%s\r\n",tcp_server_recvbuf);  //通过串口发送接收到的数据
+
+					// check cmd
+					if(strcmp(tcp_server_recvbuf,"GET Header") == 0){
+						tcp_server_flag = LWIP_SEND_HEADER;
+					} else if(strcmp(tcp_server_recvbuf, "GET Body") == 0){
+						tcp_server_flag = LWIP_SEND_BODY;
+					}
 					netbuf_delete(recvbuf);
 				}else if(recv_err == ERR_CLSD)  //关闭连接
 				{
