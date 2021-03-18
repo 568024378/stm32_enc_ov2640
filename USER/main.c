@@ -3,7 +3,6 @@
 #include "key.h"
 #include "sys.h"
 #include "usart.h"	 
-#include "usmart.h"
 #include "sram.h"
 #include "malloc.h"
 #include "enc28j60.h" 	 
@@ -88,7 +87,6 @@ int main(void)
 	uart_init(115200);	 		//串口初始化为115200
 	LED_Init();		  			//初始化与LED连接的硬件接口
 	KEY_Init();					//初始化按键
-	usmart_dev.init(72);		//初始化USMART	
 	FSMC_SRAM_Init();			//初始化外部SRAM	 
 	my_mem_init(SRAMIN);		//初始化内部内存池
 	my_mem_init(SRAMEX);		//初始化外部内存池
