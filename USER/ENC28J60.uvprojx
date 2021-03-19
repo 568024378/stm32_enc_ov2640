@@ -10,12 +10,12 @@
       <TargetName>ENC28J60</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
+      <pCCUsed>5060300::V5.06 update 3 (build 300)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F103ZE</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F1xx_DFP.2.1.0</PackID>
+          <PackID>Keil.STM32F1xx_DFP.2.3.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IROM(0x08000000,0x80000) IRAM(0x20000000,0x10000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -52,8 +52,8 @@
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
-          <DebugInformation>1</DebugInformation>
-          <BrowseInformation>1</BrowseInformation>
+          <DebugInformation>0</DebugInformation>
+          <BrowseInformation>0</BrowseInformation>
           <ListingPath>.\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
@@ -330,11 +330,12 @@
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
+            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\MALLOC;..\CORE;..\USMART;..\FWLIB\STM32F10x_FWLib\inc;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\SPI;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\ENC28J60;..\UCOSII\PORT;..\UCOSII\CORE;..\UCOSII\CONFIG;..\LWIP;..\LWIP\arch;..\LWIP\lwip-1.4.1\src\include;..\LWIP\lwip-1.4.1\src\include\ipv4;..\LWIP\lwip-1.4.1\src\include\netif;..\LWIP\lwip_app\lwip_comm;..\LWIP\lwip_app\tcp_server_demo</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\MALLOC;..\CORE;..\USMART;..\FWLIB\STM32F10x_FWLib\inc;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\SPI;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\ENC28J60;..\HARDWARE\OV2640;..\UCOSII\PORT;..\UCOSII\CORE;..\UCOSII\CONFIG;..\LWIP;..\LWIP\arch;..\LWIP\lwip-1.4.1\src\include;..\LWIP\lwip-1.4.1\src\include\ipv4;..\LWIP\lwip-1.4.1\src\include\netif;..\LWIP\lwip_app\lwip_comm;..\LWIP\lwip_app\tcp_server_demo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -347,6 +348,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -391,6 +393,11 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system_stm32f10x.c</FilePath>
+            </File>
+            <File>
+              <FileName>uCosTask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uCosTask.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -512,25 +519,15 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>USMART</GroupName>
-          <Files>
             <File>
-              <FileName>usmart.c</FileName>
+              <FileName>ov2640.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USMART\usmart.c</FilePath>
+              <FilePath>..\HARDWARE\OV2640\ov2640.c</FilePath>
             </File>
             <File>
-              <FileName>usmart_str.c</FileName>
+              <FileName>sccb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USMART\usmart_str.c</FilePath>
-            </File>
-            <File>
-              <FileName>usmart_config.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USMART\usmart_config.c</FilePath>
+              <FilePath>..\HARDWARE\OV2640\sccb.c</FilePath>
             </File>
           </Files>
         </Group>
