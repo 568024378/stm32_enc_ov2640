@@ -1,8 +1,7 @@
 平台：
  	ubuntu1604
 	opencv3.4.1
-	qt5
-
+	qt5.0
 
 
 功能： 
