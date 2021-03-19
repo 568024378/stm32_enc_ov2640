@@ -15,6 +15,7 @@
 
 void MX_OV2640_Init()
 {
+	int i = 0;
 	while(OV2640_Init())			//初始化OV2640
 	{
 		printf("OV2640 Init Error!\n");
@@ -22,12 +23,17 @@ void MX_OV2640_Init()
 	}
 	printf("OV2640 Init Success!\n");
 	OV2640_JPEG_Mode();							//设置ov2640输出jpeg数据 
-  	OV2640_OutSize_Set(320,320); 
+  	OV2640_OutSize_Set(240,240); 
 	// 以下是ov2640的速度设置
 	SCCB_WR_Reg(0XFF,0X00);
-	SCCB_WR_Reg(0XD3,30);
+	SCCB_WR_Reg(0XD3,45);
 	SCCB_WR_Reg(0XFF,0X01);
-	SCCB_WR_Reg(0X11,0X1); 
+	SCCB_WR_Reg(0X11,0X2); 
+	for(i=0;i<10;i++)		
+	{
+		while(OV2640_VSYNC==1);	 
+		while(OV2640_VSYNC==0);	  
+	}
 }
 
 

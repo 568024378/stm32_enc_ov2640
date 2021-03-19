@@ -18,7 +18,7 @@
 //无
 ////////////////////////////////////////////////////////////////////////////////// 	   
 
-#define FRAMEBUFFER_SIZE       (13*1024)
+#define FRAMEBUFFER_SIZE       (12*1024)
 
 #define TCP_SERVER_RX_BUFSIZE	10		//定义tcp server最大接收数据长度
 

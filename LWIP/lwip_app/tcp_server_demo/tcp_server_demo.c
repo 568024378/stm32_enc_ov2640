@@ -28,19 +28,27 @@ u8 FrameBuffer[FRAMEBUFFER_SIZE];
 u32 fbLen = 0;
 u8 ov2640_jpg_photo(void)
 {
-	fbLen = 0;
-	while(OV2640_VSYNC==1);	 
-	while(OV2640_VSYNC==0);	  		// 	丢掉两帧或半帧，保证下一帧完整性
-	while(OV2640_VSYNC==1);	 
-	while(OV2640_VSYNC==0);	  		// 	丢掉一帧或半帧，保证下一帧完整性
-	while(OV2640_VSYNC==1)			//	开始采集jpeg数据
-	{
-		while(OV2640_HREF && fbLen < FRAMEBUFFER_SIZE)
-		{  
-			while(OV2640_PCLK==0); 
-			FrameBuffer[fbLen++]=OV2640_DATA;
-			while(OV2640_PCLK==1); 
-		} 
+	OS_CPU_SR cpu_sr;
+	while(1) {
+		OS_ENTER_CRITICAL();
+		fbLen = 0;
+		while(OV2640_VSYNC==1);	 
+		while(OV2640_VSYNC==0);	  		// 	丢掉两帧或半帧，保证下一帧完整性
+		while(OV2640_VSYNC==1)			//	开始采集jpeg数据
+		{
+			while(OV2640_HREF)
+			{  
+				while(OV2640_PCLK==0); 
+				FrameBuffer[fbLen++]=OV2640_DATA;
+				while(OV2640_PCLK==1); 
+			} 
+		}
+		OS_EXIT_CRITICAL();
+		if((FrameBuffer[0]==0XFF)&&(FrameBuffer[1]==0XD8)){
+			printf("GetPhoto success , pbuf[0] = %x ; 1 = %x\n", FrameBuffer[0],FrameBuffer[1]);
+			break;
+		}
+		printf("GetPhoto Error\n");
 	}
 	if(fbLen >= FRAMEBUFFER_SIZE)
 		return 1;
@@ -125,7 +133,19 @@ static void tcp_server_thread(void *arg)
 					}
 					tcp_server_flag = 0;
 				} else if(tcp_server_flag & LWIP_SEND_BODY) { //发送数据
-					err = netconn_write(newconn ,FrameBuffer,fbLen,NETCONN_COPY); //发送tcp_server_sendbuf中的数据
+					u8 * pbuf = (u8*)FrameBuffer;
+					u32 send_size = 0;
+					while(send_size + 1024 < fbLen){
+						err = netconn_write(newconn ,pbuf,1024,NETCONN_COPY); //发送tcp_server_sendbuf中的数据
+						if(err != ERR_OK)
+						{
+							printf("发送失败\r\n");
+							continue;
+						}
+						pbuf += 1024;
+						send_size += 1024;
+					}
+					err = netconn_write(newconn ,pbuf,fbLen - send_size,NETCONN_COPY); //发送tcp_server_sendbuf中的数据
 					if(err != ERR_OK)
 					{
 						printf("发送失败\r\n");
